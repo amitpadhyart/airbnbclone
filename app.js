@@ -6,6 +6,10 @@ const Listing = require('./models/listing');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const wrapAsync = require('./UTILS/wrapasync');
+const ExpressError = require('./UTILS/ExpressError');
+const listingSchema = require('./schema');
+
 
 // --- MIDDLEWARE & CONFIGURATION ---
 
@@ -21,7 +25,16 @@ app.use(express.urlencoded({ extended: true }));
 // Allows using PUT/DELETE in forms where only GET/POST are natively supported
 app.use(methodOverride('_method'));
 
+const validateListing = (req, res, next) => {
+     let {error} = listingSchema.validateAsync(req.body);
+        console.log(result)
+        if (error) { throw new ExpressError(400, result.error.message)
+}else{
+    next();
+}
+}
 // --- DATABASE CONNECTION ---
+
 
 main()
     .then(() => console.log('Connected to DB'))
@@ -56,16 +69,12 @@ app.get('/listings/new', (req, res) => {
 });
 
 // Create Route: Save new listing to database
-app.post('/listings', async (req, res) => {
-    try {
+app.post('/listings', validateListing, wrapAsync (async (req, res, next) => {
+       
         const newListing = new Listing(req.body.listing);
         await newListing.save();
         res.redirect('/listings');
-    } catch (err) {
-        console.error(err);
-        res.status(400).send('Error creating listing: ' + err.message);
-    }
-});
+}));
 
 // Show Route: Display details for one specific listing
 app.get('/listings/:id', async (req, res) => {
@@ -94,7 +103,7 @@ app.get('/listings/:id/edit', async (req, res) => {
 });
 
 // Update Route: Apply changes to a specific listing
-app.put('/listings/:id', async (req, res) => {
+app.put('/listings/:id', validateListing, wrapAsync, async (req, res) => {
     try {
         let { id } = req.params;
         await Listing.findByIdAndUpdate(id, { ...req.body.listing });
@@ -117,6 +126,15 @@ app.delete('/listings/:id', async (req, res) => {
     }
 });
 
+app.all('/{*path}', (req, res, next) => {
+    next(new ExpressError( 404, 'Page Not Found'))
+})
+
+app.use((err, req, res, next) => {
+   let { status = 500, message = 'Something went wrong' } = err;
+  res.render('error.ejs', { status, message });
+  console.log(err)
+})
 // --- SERVER START ---
 
 app.listen(port, () => {

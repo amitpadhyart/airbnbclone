@@ -10,8 +10,14 @@ const listingSchema = new Schema({
         type: String
     },
     image: {
-        filename: String,
-        url: String,
+        url: {
+            type: String,
+            default: "https://tse4.mm.bing.net/th/id/OIP.VJzfWqJC0NM2QYjHs2ND_QHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
+            set: (v) =>
+                v === "" || v == null
+                    ? "https://tse4.mm.bing.net/th/id/OIP.VJzfWqJC0NM2QYjHs2ND_QHaE8?rs=1&pid=ImgDetMain&o=7&rm=3"
+                    : v,
+        }
     },
     price: {
         type: Number
