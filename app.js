@@ -9,8 +9,15 @@ const ejsMate = require('ejs-mate');
 const wrapAsync = require('./UTILS/wrapasync');
 const ExpressError = require('./UTILS/ExpressError');
 const Review = require('./models/review');
-const listings = require('./routes/listing.js')
-const reviews = require('./routes/review.js')
+const listingRouter  = require('./routes/listing.js')
+const reviewRouter = require('./routes/review.js')
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
+
+
 
 
 
@@ -27,6 +34,47 @@ app.use(express.urlencoded({ extended: true }));
 
 // Allows using PUT/DELETE in forms where only GET/POST are natively supported
 app.use(methodOverride('_method'));
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true 
+    }  
+
+}
+app.use(session(sessionConfig));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    res.locals.currentUser = req.user;
+    console.log(res.locals.success)
+    next();
+})
+
+// app.get('/demouser', async (req, res) => {
+//     let fakeuser = new User({
+//         email: "student@gmail.com",
+//         username : 'deltaStudent101'
+
+//     })
+
+//     let registeredUser = await User.register(fakeuser, 'helloWORLD' )
+//     res.send(registeredUser)
+// })
+
 
 // --- DATABASE CONNECTION ---
 
@@ -46,9 +94,10 @@ app.get('/', (req, res) => {
     res.redirect('/listings');
 });
 
-
-app.use('/listings', listings)
-app.use('/listings/:id/reviews', reviews)
+app.use('/', require('./routes/user.js'))
+app.use('/listings', listingRouter)
+app.use('/listings/:id/reviews', reviewRouter)
+// app.use('/users', require('./routes/user.js'))
 
 
 

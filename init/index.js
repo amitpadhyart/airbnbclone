@@ -9,6 +9,7 @@ await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 
 const initDB = async () => {
     await Listing.deleteMany({});
+    initData.data =initData.data.map((obj)=>({...obj, owner: '69b53e7e1dbe6c70d4e15834'}))
     await Listing.insertMany(initData.data);
     console.log('data was initialized')
 }
