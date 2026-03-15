@@ -1,30 +1,213 @@
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-brands fa-airbnb"></i></a>
+<style>
+  :root {
+    --airbnb-red: #fe424d;
+    --airbnb-red-dark: #e0313b;
+    --nav-height: 72px;
+  }
+
+  .navbar-airbnb {
+    height: var(--nav-height);
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+    padding: 0 1rem;
+  }
+
+  .navbar-airbnb .navbar-brand {
+    font-size: 2rem;
+    color: var(--airbnb-red);
+    line-height: 1;
+    transition: opacity 0.15s ease;
+  }
+
+  .navbar-airbnb .navbar-brand:hover {
+    opacity: 0.85;
+  }
+
+  .search-pill {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #dddddd;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease;
+    background: #fff;
+  }
+
+  .search-pill:focus-within {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    border-color: #b0b0b0;
+  }
+
+  .search-pill input.form-control {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 0.45rem 1rem;
+    font-size: 0.875rem;
+    min-width: 180px;
+    color: #222;
+  }
+
+  .search-pill input.form-control:focus {
+    box-shadow: none;
+  }
+
+  .search-pill input.form-control::placeholder {
+    color: #888;
+  }
+
+  .btn-search {
+    background-color: var(--airbnb-red);
+    color: #fff;
+    border: none;
+    border-radius: 0 40px 40px 0;
+    padding: 0.45rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    white-space: nowrap;
+  }
+
+  .btn-search:hover,
+  .btn-search:focus {
+    background-color: var(--airbnb-red-dark);
+    color: #fff;
+    outline: none;
+  }
+
+  .btn-search:active {
+    transform: scale(0.97);
+  }
+
+  .navbar-airbnb .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #222;
+    padding: 0.4rem 0.75rem;
+    border-radius: 24px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .navbar-airbnb .nav-link:hover {
+    background-color: #f7f7f7;
+    color: #000;
+  }
+
+  .navbar-airbnb .nav-link.active {
+    font-weight: 600;
+    color: #000;
+  }
+
+  .nav-auth .nav-link {
+    color: #444;
+  }
+
+  .nav-auth .nav-link:hover {
+    color: var(--airbnb-red);
+    background-color: #fff0f1;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 24px;
+    background: #e0e0e0;
+    margin: 0 0.5rem;
+    align-self: center;
+  }
+
+  @media (max-width: 991.98px) {
+    .search-pill {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    .search-pill input.form-control {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .nav-divider {
+      display: none;
+    }
+
+    .navbar-airbnb .navbar-collapse {
+      padding: 0.75rem 0;
+      gap: 0.25rem;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-airbnb sticky-top">
+  <div class="container-fluid px-3 px-lg-4">
+
+    <a class="navbar-brand" href="/" aria-label="Airbnb Home">
+      <i class="fa-brands fa-airbnb"></i>
+    </a>
+
     <button
-      class="navbar-toggler"
+      class="navbar-toggler border-0 shadow-none"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
+      data-bs-target="#navbarMain"
+      aria-controls="navbarMain"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link" href="/listings">All Listings</a>
-        <a class="nav-link" href="/listings/new">New Listing</a>
-      </div>
-      <div class="navbar-nav">
-      <% if (!currentUser) {%>
-        <a class="nav-link active" href="/signup">Signup</a>
-        <a class="nav-link" href="/login">Login</a>
-        <%}%>
 
-      <% if (currentUser) {%>
-        <a class="nav-link" href="/logout">LogOut</a>
-        <%}%>
-      </div>
+    <div class="collapse navbar-collapse align-items-center gap-2" id="navbarMain">
+
+      <ul class="navbar-nav me-auto mb-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/listings">Explore</a>
+        </li>
+      </ul>
+
+      <form class="search-pill mx-auto" role="search" action="/listings" method="GET">
+        <input
+          class="form-control"
+          type="search"
+          name="search"
+          placeholder="Search destinations"
+          aria-label="Search destinations"
+        />
+        <button class="btn-search" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Search</span>
+        </button>
+      </form>
+
+      <ul class="navbar-nav ms-auto align-items-lg-center nav-auth mb-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Airbnb Your Home</a>
+        </li>
+
+        <div class="nav-divider d-none d-lg-block"></div>
+
+        <% if (!currentUser) { %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/signup">Sign up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Log in</a>
+          </li>
+        <% } %>
+
+        <% if (currentUser) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Log out</a>
+          </li>
+        <% } %>
+      </ul>
+
     </div>
   </div>
 </nav>
