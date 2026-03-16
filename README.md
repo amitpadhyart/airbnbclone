@@ -136,5 +136,5 @@ This project is open source and available under the [MIT License](LICENSE).
  
 ## 👨‍💻 Author
  
-**Amit Padhya**  
+**Amit Padhy**  
 GitHub: [@amitpadhyart](https://github.com/amitpadhyart)
