@@ -1,11 +1,17 @@
-# 🏠 Airbnb Clone
- 
+# 🏠 Wanderlust — Airbnb Clone
+
 A full-stack Airbnb clone built with Node.js, Express, and MongoDB that replicates core features of the popular vacation rental platform — including property listings, reviews, user authentication, and image uploads.
- 
+
+## 🌐 Live Demo
+
+👉 [https://airbnbcloneproject-e0lz.onrender.com/listings](https://airbnbcloneproject-e0lz.onrender.com/listings)
+
+> Hosted on [Render](https://render.com)
+
 ---
- 
+
 ## ✨ Features
- 
+
 - 🔐 User authentication (sign up / log in / log out)
 - 🏡 Create, edit, and delete property listings
 - 📸 Image upload via Cloudinary
@@ -14,11 +20,11 @@ A full-stack Airbnb clone built with Node.js, Express, and MongoDB that replicat
 - ⚠️ Flash messages for user feedback
 - 🛡️ Error handling with custom error classes
 - 📱 Responsive UI with EJS templating
- 
+
 ---
- 
+
 ## 🛠️ Tech Stack
- 
+
 | Layer        | Technology              |
 |--------------|-------------------------|
 | Backend      | Node.js, Express.js     |
@@ -27,34 +33,34 @@ A full-stack Airbnb clone built with Node.js, Express, and MongoDB that replicat
 | Auth         | Passport.js             |
 | Image Upload | Cloudinary              |
 | Styling      | CSS (custom stylesheet) |
-| Middleware   | Express Middleware      |
- 
+| Hosting      | Render                  |
+
 ---
- 
+
 ## 🚀 Getting Started
- 
+
 ### Prerequisites
- 
+
 - Node.js (v16 or higher)
 - npm
 - MongoDB (local or Atlas)
 - Cloudinary account
- 
+
 ### Installation
- 
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/amitpadhyart/airbnbclone.git
    cd airbnbclone
    ```
- 
+
 2. **Install dependencies**
    ```bash
    npm install
    ```
- 
+
 3. **Set up environment variables**
- 
+
    Create a `.env` file in the root directory:
    ```env
    ATLASDB_URL=your_mongodb_atlas_connection_string
@@ -63,23 +69,23 @@ A full-stack Airbnb clone built with Node.js, Express, and MongoDB that replicat
    CLOUD_API_KEY=your_cloudinary_api_key
    CLOUD_API_SECRET=your_cloudinary_api_secret
    ```
- 
+
 4. **(Optional) Seed the database**
    ```bash
    node init/index.js
    ```
- 
+
 5. **Start the server**
    ```bash
    node app.js
    ```
- 
+
 6. Open [http://localhost:8080](http://localhost:8080) in your browser.
- 
+
 ---
- 
+
 ## 📁 Project Structure
- 
+
 ```
 airbnbclone/
 ├── controllers/
@@ -125,16 +131,16 @@ airbnbclone/
 ├── .env                  # Environment variables
 └── index.html            # Static HTML
 ```
- 
+
 ---
- 
+
 ## 📄 License
- 
+
 This project is open source and available under the [MIT License](LICENSE).
- 
+
 ---
- 
+
 ## 👨‍💻 Author
- 
-**Amit Padhy**  
+
+**Amit Padhya**  
 GitHub: [@amitpadhyart](https://github.com/amitpadhyart)
